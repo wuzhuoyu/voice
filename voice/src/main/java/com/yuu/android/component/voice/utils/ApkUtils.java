@@ -7,7 +7,10 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.util.DisplayMetrics;
+
+import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.security.MessageDigest;
@@ -160,18 +163,45 @@ public class ApkUtils {
         return "";
     }
 
+//    /**
+//     * 安装apk
+//     *
+//     * @param context  上下文
+//     * @param filePath APK文件路径
+//     */
+//    public static void installApk(Context context, String filePath) {
+//        Intent intent = new Intent();
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.setAction(Intent.ACTION_VIEW);
+//        intent.setDataAndType(Uri.fromFile(new File(filePath)),
+//                "application/vnd.android.package-archive");
+//        context.startActivity(intent);
+//    }
+
+    public static void installApk(Context context, String filePath) {
+        installApk(context, new File(filePath), context.getPackageName());
+    }
+
     /**
      * 安装apk
      *
-     * @param context  上下文
-     * @param filePath APK文件路径
+     * @param context   上下文
+     * @param file      APK文件
+     * @param authority FileProvider
      */
-    public static void installApk(Context context, String filePath) {
+    public static void installApk(Context context, File file, String authority) {
         Intent intent = new Intent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setAction(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(new File(filePath)),
-                "application/vnd.android.package-archive");
+        if (Build.VERSION.SDK_INT >= 24) {
+            //provider authorities
+            Uri apkUri = FileProvider.getUriForFile(context, authority, file);
+            //Granting Temporary Permissions to a URI
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+        } else {
+            intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+        }
         context.startActivity(intent);
     }
 
