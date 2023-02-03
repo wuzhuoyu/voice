@@ -19,7 +19,7 @@ class EngineService : EngineApi {
     }
 
     override fun installEngine(context: Context) {
-        thread {
+        Thread{
             val file = File(FileUtils.getVoiceFileDir(context).path.toString() + "/" + APK_NAME)
             if (!file.exists()) {
                 FileUtils.copyAssets(
