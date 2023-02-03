@@ -6,6 +6,7 @@ import com.yuu.android.component.voice.utils.ApkUtils
 import com.yuu.android.component.voice.utils.ApkUtils.installApk
 import com.yuu.android.component.voice.utils.FileUtils
 import java.io.File
+import kotlin.concurrent.thread
 
 class EngineService : EngineApi {
     override fun checkVoiceService(context: Context, onVoiceServiceListener:( ()->Unit)?) {
@@ -18,15 +19,17 @@ class EngineService : EngineApi {
     }
 
     override fun installEngine(context: Context) {
-        val file = File(FileUtils.getVoiceFileDir(context).path.toString() + "/" + APK_NAME)
-        if (!file.exists()) {
-            FileUtils.copyAssets(
-                context,
-                APK_NAME,
-                FileUtils.getVoiceFileDir(context).path.toString() + "/" + APK_NAME
-            )
-        }
-        installApk(context, FileUtils.getVoiceFileDir(context).path.toString() + "/" + APK_NAME)
+        thread {
+            val file = File(FileUtils.getVoiceFileDir(context).path.toString() + "/" + APK_NAME)
+            if (!file.exists()) {
+                FileUtils.copyAssets(
+                    context,
+                    APK_NAME,
+                    FileUtils.getVoiceFileDir(context).path.toString() + "/" + APK_NAME
+                )
+            }
+            installApk(context, FileUtils.getVoiceFileDir(context).path.toString() + "/" + APK_NAME)
+        }.start()
     }
 
 
