@@ -59,7 +59,7 @@ afterEvaluate {
             create<MavenPublication>("release"){
                 group = "com.yuu.android.component"
                 artifactId = "voice"
-                version = "0.0.2-alpha"
+                version = "0.0.3-alpha"
 
                 afterEvaluate { artifact(tasks.getByName("bundleReleaseAar")) }
             }
