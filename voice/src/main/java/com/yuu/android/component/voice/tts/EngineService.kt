@@ -8,7 +8,14 @@ import com.yuu.android.component.voice.utils.FileUtils
 import java.io.File
 import kotlin.concurrent.thread
 
-class EngineService : EngineApi {
+object EngineService : EngineApi {
+
+    const val VOICE_SERVICE_PACKAGE_NAME = "com.iflytek.speechcloud"
+    const val APK_NAME = "kdxfyq3.apk"
+    private var onVoiceInstallListener:( ()->Unit)? = null
+
+    fun getOnVoiceInstalledListener() = onVoiceInstallListener
+
     override fun checkVoiceService(context: Context, onVoiceServiceListener:( ()->Unit)?) {
         onVoiceInstallListener = onVoiceServiceListener
         if (!isVoiceEngineServiceInstalled(context)) {
@@ -37,11 +44,4 @@ class EngineService : EngineApi {
     private fun isVoiceEngineServiceInstalled(context: Context) =
         ApkUtils.isAppInstalled(context, VOICE_SERVICE_PACKAGE_NAME)
 
-    companion object {
-        const val VOICE_SERVICE_PACKAGE_NAME = "com.iflytek.speechcloud"
-        const val APK_NAME = "kdxfyq3.apk"
-        private var onVoiceInstallListener:( ()->Unit)? = null
-
-        fun getOnVoiceInstalledListener() = onVoiceInstallListener
-    }
 }

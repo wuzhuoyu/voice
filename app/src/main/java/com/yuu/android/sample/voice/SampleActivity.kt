@@ -14,7 +14,7 @@ class SampleActivity : AppCompatActivity(), OnInitListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        EngineService().checkVoiceService(this){
+        EngineService.checkVoiceService(this){
             tts = TextToSpeech(this,this,"com.iflytek.speechcloud")
         }
         setContentView(R.layout.activity_main)
