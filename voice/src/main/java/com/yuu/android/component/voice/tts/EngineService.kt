@@ -1,6 +1,7 @@
 package com.yuu.android.component.voice.tts
 
 import android.content.Context
+import android.util.Log
 import com.yuu.android.component.voice.api.EngineApi
 import com.yuu.android.component.voice.utils.ApkUtils
 import com.yuu.android.component.voice.utils.ApkUtils.installApk
@@ -28,6 +29,7 @@ object EngineService : EngineApi {
     override fun installEngine(context: Context) {
         Thread{
             val file = File(FileUtils.getVoiceFileDir(context).path.toString() + "/" + APK_NAME)
+            Log.d(this::class.java.simpleName,file.absolutePath)
             if (!file.exists()) {
                 FileUtils.copyAssets(
                     context,

@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import androidx.core.content.FileProvider;
 
@@ -190,6 +191,7 @@ public class ApkUtils {
      * @param authority FileProvider
      */
     public static void installApk(Context context, File file, String authority) {
+        Log.d("ApkUtils",authority);
         Intent intent = new Intent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setAction(Intent.ACTION_VIEW);
